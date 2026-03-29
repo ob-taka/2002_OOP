@@ -1,19 +1,58 @@
-# SC2002 Turn-Based Combat Arena (Java, OODP + SOLID)
+# SC2002 Turn-Based Combat Arena
 
-A CLI-based turn-based combat arena game built with Java, demonstrating Object-Oriented Design Principles and SOLID compliance.
+A CLI-based turn-based combat arena game built with Java, demonstrating Object-Oriented Design Principles (OODP) and SOLID compliance for the SC2002 module.
 
-## Game Overview
+## Introduction
 
-A player selects a character class and fights waves of enemies using Actions, Items, and Status Effects across multiple difficulty levels.
+In this game, a player selects a character class (Warrior or Wizard) and fights through waves of enemies using a combination of basic attacks, special skills, items, and status effects. The game features multiple difficulty levels, each with unique enemy compositions and backup spawn mechanics that increase the challenge as the battle progresses.
 
 - **Players**: Warrior, Wizard
 - **Enemies**: Goblin, Wolf
-- **Levels**: Easy, Medium, Hard (with backup spawn waves)
-- **Win**: All enemies defeated | **Lose**: Player HP reaches 0
+- **Difficulty Levels**: Easy, Medium, Hard (with backup spawn waves)
+- **Win Condition**: All enemies defeated
+- **Lose Condition**: Player HP reaches 0
 
-## Architecture
+## How to Launch
 
-Follows the **Boundary-Control-Entity (BCE)** pattern.
+### Prerequisites
+
+- Java JDK 17 or above installed
+- Terminal / Command Prompt
+
+### Compile and Run
+
+From the project root directory:
+
+```bash
+# Compile all source files
+javac -d out src/main/java/com/arena/**/*.java src/main/java/com/arena/*.java
+
+# Run the game
+java -cp out com.arena.App
+```
+
+### Using an IDE (IntelliJ / Eclipse / VS Code)
+
+1. Open the project folder in your IDE.
+2. Mark `src/main/java` as the sources root.
+3. Run `com.arena.App` (the `main` method in `App.java`).
+
+## Design Architecture
+
+The project follows the **Boundary-Control-Entity (BCE)** architectural pattern, separating concerns into three layers:
+
+| Layer | Package | Responsibility |
+|-------|---------|----------------|
+| **Boundary** | `ui/` | Handles all user I/O (`ConsoleView`) through the `GameView` interface |
+| **Control** | `engine/` | Orchestrates game flow, battle rounds, turn ordering, and win/loss logic |
+| **Entity** | `model/` | Represents domain objects — combatants, items, status effects, levels |
+
+Supporting packages:
+- `action/` — Encapsulates player and enemy actions as command objects
+- `strategy/` — Pluggable algorithms for turn ordering and enemy AI
+- `factory/` — Centralizes object creation for combatants, items, and levels
+
+### Source Structure
 
 ```
 src/main/java/com/arena/
@@ -76,18 +115,20 @@ src/main/java/com/arena/
 
 | Pattern | Usage |
 |---------|-------|
-| **Strategy** | TurnOrderStrategy, EnemyBehavior — extensible turn ordering and enemy AI |
-| **Command** | Action interface + implementations — encapsulate actions as objects |
-| **Factory** | CombatantFactory, ItemFactory, LevelFactory — decouple creation from usage |
-| **Template Method** | Combatant stat/effect lifecycle — common flow with override points |
+| **Strategy** | `TurnOrderStrategy`, `EnemyBehavior` — pluggable turn ordering and enemy AI |
+| **Command** | `Action` interface + implementations — encapsulate player/enemy actions as objects |
+| **Factory** | `CombatantFactory`, `ItemFactory`, `LevelFactory` — decouple object creation from usage |
+| **Template Method** | `Combatant` stat/effect lifecycle — common flow with class-specific override points |
 
 ## SOLID Principles
 
-- **SRP**: Each class has one responsibility (e.g., Combatant manages stats, BattleEngine orchestrates turns)
-- **OCP**: New Action/StatusEffect = new class implementing interface. BattleEngine untouched.
-- **LSP**: Warrior/Wizard interchangeable as Player; Goblin/Wolf as Enemy; all as Combatant
-- **ISP**: StatusEffect uses Java default methods — implementors override only relevant modifiers
-- **DIP**: BattleEngine depends on TurnOrderStrategy, GameView, EnemyBehavior interfaces (abstractions, not concretions)
+| Principle | How It Is Applied |
+|-----------|-------------------|
+| **SRP** | Each class has one responsibility (e.g., `Combatant` manages stats, `BattleEngine` orchestrates turns) |
+| **OCP** | New actions or effects = new class implementing the interface. `BattleEngine` remains untouched |
+| **LSP** | `Warrior`/`Wizard` are interchangeable as `Player`; `Goblin`/`Wolf` as `Enemy`; all as `Combatant` |
+| **ISP** | `StatusEffect` uses Java default methods — implementors override only the modifiers they need |
+| **DIP** | `BattleEngine` depends on abstractions (`TurnOrderStrategy`, `GameView`, `EnemyBehavior`), not concrete classes |
 
 ## Game Mechanics
 
@@ -101,26 +142,20 @@ src/main/java/com/arena/
 | Wolf | 40 | 45 | 5 | 35 | BasicAttack only |
 
 ### Actions (one per turn)
+
 - **BasicAttack**: `dmg = max(0, ATK - target DEF)`
 - **Defend**: +10 DEF for current + next round
 - **Item**: Use a consumable item
 - **SpecialSkill**: Class-specific ability, 3-turn cooldown
 
 ### Items (2 chosen at game start, single-use)
+
 - **Potion**: Heal 100 HP (capped at max)
 - **Power Stone**: Trigger special skill without affecting cooldown
 - **Smoke Bomb**: Enemy attacks deal 0 damage for current + next turn
 
 ### Difficulty Levels
+
 - **Easy**: 3 Goblins
-- **Medium**: 1 Goblin + 1 Wolf, backup spawn 2 Wolves
-- **Hard**: 2 Goblins, backup spawn 1 Goblin + 2 Wolves
-
-## Implementation Phases
-
-1. **Core Model** — Combatant hierarchy, status effects, items
-2. **Actions & Strategies** — Action commands, turn order, enemy behavior
-3. **Levels & Factories** — Level definitions, object factories
-4. **Battle Engine** — Round loop, win/loss logic, backup spawning
-5. **CLI UI** — GameView interface + ConsoleView implementation
-6. **Integration & Polish** — End-to-end testing against assignment examples
+- **Medium**: 1 Goblin + 1 Wolf, backup spawn of 2 Wolves
+- **Hard**: 2 Goblins, backup spawn of 1 Goblin + 2 Wolves
