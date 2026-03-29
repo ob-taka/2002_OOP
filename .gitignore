@@ -1,1 +1,6 @@
 SC2002 Turn-based Combat Assignment v2.docx
+out/
+*.class
+*.jar
+.idea/
+*.iml
