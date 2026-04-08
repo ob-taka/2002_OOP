@@ -12,6 +12,7 @@ public interface GameView {
     void showWelcome();
     int promptPlayerClass();
     List<String> promptItemSelection();
+    List<String> promptItemSelection(String playerClass);
     int promptDifficulty();
 
     void showRoundStart(int round, List<Combatant> turnOrder);

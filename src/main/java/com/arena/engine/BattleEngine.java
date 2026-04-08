@@ -130,8 +130,12 @@ public class BattleEngine {
         if (name.equals("potion") || name.equals("smoke bomb")) {
             return Collections.singletonList(player);
         }
+        // AoE-on-enemies items
+        if (name.equals("poison potion") || name.equals("blind potion")) {
+            return new ArrayList<>(context.getAliveEnemies());
+        }
         // Power Stone targets enemies
-        if (player instanceof Wizard) {
+        if (name.equals("power stone") && player instanceof Wizard) {
             return new ArrayList<>(context.getAliveEnemies());
         }
         List<Enemy> alive = context.getAliveEnemies();

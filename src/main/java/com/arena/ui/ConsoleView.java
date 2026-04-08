@@ -56,18 +56,37 @@ public class ConsoleView implements GameView {
 
     @Override
     public List<String> promptItemSelection() {
-        String[] itemNames = {"Potion", "Power Stone", "Smoke Bomb"};
+        return promptItemSelection(null);
+    }
+
+    @Override
+    public List<String> promptItemSelection(String playerClass) {
+        java.util.List<String> itemNames = new java.util.ArrayList<>();
+        java.util.List<String> labels = new java.util.ArrayList<>();
+        itemNames.add("Potion");        labels.add("Potion           - Heal 100 HP");
+        itemNames.add("Power Stone");   labels.add("Power Stone      - Free special skill (no cooldown)");
+        itemNames.add("Smoke Bomb");    labels.add("Smoke Bomb       - Enemy attacks deal 0 dmg for 2 turns");
+        itemNames.add("Poison Potion"); labels.add("Poison Potion    - DoT 3 HP/turn for 3 turns to ALL enemies");
+        if ("Warrior".equalsIgnoreCase(playerClass)) {
+            itemNames.add("Burst Kill Potion");
+            labels.add("Burst Kill Potion- Instantly kill 1 enemy (Warrior only, requires HP>=20, self-stun 1)");
+        }
+        if ("Wizard".equalsIgnoreCase(playerClass)) {
+            itemNames.add("Blind Potion");
+            labels.add("Blind Potion     - Stun ALL enemies for 1 turn (Wizard only)");
+        }
+
         System.out.println("\n--- Available Items ---");
-        System.out.println("[1] Potion      - Heal 100 HP");
-        System.out.println("[2] Power Stone - Free special skill (no cooldown)");
-        System.out.println("[3] Smoke Bomb  - Enemy attacks deal 0 dmg for 2 turns");
+        for (int i = 0; i < labels.size(); i++) {
+            System.out.println("[" + (i + 1) + "] " + labels.get(i));
+        }
         System.out.println();
 
         String[] selected = new String[2];
         for (int i = 0; i < 2; i++) {
             System.out.println("Select item " + (i + 1) + " of 2 (duplicates allowed):");
-            int choice = readInt(1, 3);
-            selected[i] = itemNames[choice - 1];
+            int choice = readInt(1, itemNames.size());
+            selected[i] = itemNames.get(choice - 1);
         }
         return List.of(selected);
     }

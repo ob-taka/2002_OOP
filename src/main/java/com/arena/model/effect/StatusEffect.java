@@ -11,4 +11,6 @@ public interface StatusEffect {
     default int getSpdModifier() { return 0; }
     default boolean preventsAction() { return false; }
     default boolean preventsIncomingDamage() { return false; }
+    default int getDamagePerTick() { return 0; }
+    default int getHealPerTick() { return 0; }
 }

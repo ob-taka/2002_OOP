@@ -9,6 +9,9 @@ public class ItemFactory {
             case "potion": return new Potion();
             case "power stone": return new PowerStone();
             case "smoke bomb": return new SmokeBomb();
+            case "poison potion": return new PoisonPotion();
+            case "burst kill potion": return new BurstKillPotion();
+            case "blind potion": return new BlindPotion();
             default: throw new IllegalArgumentException("Unknown item type: " + type);
         }
     }

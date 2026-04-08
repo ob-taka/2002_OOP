@@ -84,6 +84,10 @@ public abstract class Combatant {
         Iterator<StatusEffect> it = activeEffects.iterator();
         while (it.hasNext()) {
             StatusEffect effect = it.next();
+            int dmg = effect.getDamagePerTick();
+            if (dmg > 0) takeDamage(dmg);
+            int hot = effect.getHealPerTick();
+            if (hot > 0) heal(hot);
             effect.decrementTurn();
             if (effect.isExpired()) {
                 it.remove();

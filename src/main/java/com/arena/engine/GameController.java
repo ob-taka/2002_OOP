@@ -26,7 +26,7 @@ public class GameController {
             Player player = createPlayer(playerClass);
             view.showMessage("\nYou selected: " + player.getName());
 
-            List<String> items = view.promptItemSelection();
+            List<String> items = view.promptItemSelection(player.getName());
             for (String itemName : items) {
                 player.addItem(ItemFactory.createItem(itemName));
             }
