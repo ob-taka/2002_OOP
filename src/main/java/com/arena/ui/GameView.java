@@ -11,7 +11,7 @@ import java.util.List;
 public interface GameView {
     void showWelcome();
     int promptPlayerClass();
-    List<String> promptItemSelection(String playerClass);
+    List<String> promptItemSelection();
     int promptDifficulty();
 
     void showRoundStart(int round, List<Combatant> turnOrder);

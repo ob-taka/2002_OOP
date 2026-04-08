@@ -56,21 +56,13 @@ public class ConsoleView implements GameView {
     }
 
     @Override
-    public List<String> promptItemSelection(String playerClass) {
+    public List<String> promptItemSelection() {
         List<String> itemNames = new ArrayList<>();
         List<String> labels = new ArrayList<>();
         itemNames.add("Potion");        labels.add("Potion           - Heal 100 HP");
         itemNames.add("Power Stone");   labels.add("Power Stone      - Free special skill (no cooldown)");
         itemNames.add("Smoke Bomb");    labels.add("Smoke Bomb       - Enemy attacks deal 0 dmg for 2 turns");
         itemNames.add("Poison Potion"); labels.add("Poison Potion    - DoT 3 HP/turn for 3 turns to ALL enemies");
-        if ("Warrior".equalsIgnoreCase(playerClass)) {
-            itemNames.add("Burst Kill Potion");
-            labels.add("Burst Kill Potion- Instantly kill 1 enemy (Warrior only, requires HP>=20, self-stun 1)");
-        }
-        if ("Wizard".equalsIgnoreCase(playerClass)) {
-            itemNames.add("Blind Potion");
-            labels.add("Blind Potion     - Stun ALL enemies for 1 turn (Wizard only)");
-        }
 
         System.out.println("\n--- Available Items ---");
         for (int i = 0; i < labels.size(); i++) {
