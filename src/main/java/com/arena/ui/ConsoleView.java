@@ -7,6 +7,7 @@ import com.arena.model.combatant.Enemy;
 import com.arena.model.combatant.Player;
 import com.arena.model.effect.StatusEffect;
 import com.arena.model.item.Item;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -55,14 +56,9 @@ public class ConsoleView implements GameView {
     }
 
     @Override
-    public List<String> promptItemSelection() {
-        return promptItemSelection(null);
-    }
-
-    @Override
     public List<String> promptItemSelection(String playerClass) {
-        java.util.List<String> itemNames = new java.util.ArrayList<>();
-        java.util.List<String> labels = new java.util.ArrayList<>();
+        List<String> itemNames = new ArrayList<>();
+        List<String> labels = new ArrayList<>();
         itemNames.add("Potion");        labels.add("Potion           - Heal 100 HP");
         itemNames.add("Power Stone");   labels.add("Power Stone      - Free special skill (no cooldown)");
         itemNames.add("Smoke Bomb");    labels.add("Smoke Bomb       - Enemy attacks deal 0 dmg for 2 turns");

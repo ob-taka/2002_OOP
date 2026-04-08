@@ -11,7 +11,6 @@ import java.util.List;
 public interface GameView {
     void showWelcome();
     int promptPlayerClass();
-    List<String> promptItemSelection();
     List<String> promptItemSelection(String playerClass);
     int promptDifficulty();
 
